@@ -2,9 +2,19 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  typescript: {
+    strict: true,
+  },
+
   experimental: {
     typedPages: true,
     componentIslands: true,
+  },
+
+  routeRules: {
+    "/": {
+      redirect: "/home",
+    },
   },
 
   runtimeConfig: {
@@ -13,5 +23,5 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@vueuse/nuxt", "@nuxt/ui", "@pinia/nuxt"],
+  modules: ["@vueuse/nuxt", "@nuxt/ui", "@pinia/nuxt", "@nuxt/image"],
 });
