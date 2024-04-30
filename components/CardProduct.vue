@@ -22,10 +22,10 @@
         <NuxtImg
           :src="props.thumbnail"
           :alt="props.title"
-          loading="lazy"
           width="300"
           height="350"
           class="mx-auto w-full object-cover rounded-md h-[350px]"
+          :placeholder="[300, 350]"
         />
         <UBadge
           v-if="props.discountPercentage"
@@ -36,7 +36,7 @@
         >
       </NuxtLink>
       <div class="flex flex-col gap-2">
-        <p class="mt-2">  
+        <p class="mt-2">
           {{ props.description }}
         </p>
         <div class="flex items-center justify-between">

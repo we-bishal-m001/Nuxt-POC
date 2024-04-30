@@ -2,17 +2,17 @@
   <div class="my-5">
     <h1 class="text-xl font-semibold mb-10">
       Total number of displayed products =
-      <UBadge size="lg">
-        {{ productStore.products.length }}
-      </UBadge>
+      <UBadge :label="data?.products.length || 0" />
     </h1>
+    <div v-if="pending">
+      <USkeleton class="w-[300px] h-[350px]" />
+    </div>
     <!-- PRODUCT CARDS -->
-    <div class="grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
-      <CardProduct
-        v-for="product in productStore.products"
-        :key="product.id"
-        v-bind="product"
-      />
+    <div v-else class="grid gap-4 grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
+      <div v-for="product in data?.products" :key="product.id">
+        <CardProduct v-bind="product" />
+      </div>
+      <!-- {{ data }} -->
     </div>
   </div>
 </template>
@@ -22,20 +22,8 @@ const config = useRuntimeConfig();
 const externalApiUrl = `${config.public.productsApiBaseUrl}?limit=100`;
 const internalApiUrl = "/api/products";
 
-const productStore = useProductStore();
-
 // fetch all products
-try {
-  productStore.loading = true;
-  const { data } = await useFetch<any>(externalApiUrl);
-
-  if (data.value.products) productStore.products = data.value.products;
-  else productStore.error = "something wrong happended";
-} catch (e) {
-  console.error(e);
-} finally {
-  productStore.loading = false;
-}
+const { data, pending, status, error } = await useFetch<any>(externalApiUrl, {
+  lazy: true,
+});
 </script>
-
-<style scoped></style>
